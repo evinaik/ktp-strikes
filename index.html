@@ -11,9 +11,18 @@
     <title>KTP Strikes Fall 2019</title>
   </head>
   <body>
-
-    <table id="table">
-      <thead>
+    <div id="title" class="py-3">
+      <h1 class="text-center">Kappa Theta Pi Strikes</h1>
+      <h5 class="text-center">A log of all strikes added and removed and their reasons why.</h5>  
+    </div>
+    <div id="loading-message" class="text-center mt-2">
+      <h5 class="py-2">Loading Table...</h5>
+      <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>  
+    </div>
+    <table id="table" class="table table-striped" style="display: none;">
+      <thead class="text-center">
         <tr>
           <th data-field="id">Strike ID</th>
           <th data-field="user_id" data-sortable="true">User ID</th>
@@ -32,11 +41,14 @@
 
     <script>
       var $table = $('#table');
+      var fadeTime = 400;
 
-      $.getJSON("http://slack-striker.herokuapp.com/getAllStrikes", function (data) {
+      $.getJSON("http://slack-striker.herokuapp.com/getAllStrikes", function(data) {
+        $('#loading-message').fadeOut(fadeTime);
         var strikes = data.allStrikes;
 
         $table.bootstrapTable({data: strikes});
+        $table.delay(fadeTime).fadeIn(fadeTime);
       });
     </script>
   </body>
