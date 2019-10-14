@@ -9,11 +9,27 @@
 
 
     <title>KTP Strikes Fall 2019</title>
+    <style>
+      .no-show {
+        display: none;
+      }
+    </style>
   </head>
   <body>
-
-    <table id="table">
-      <thead>
+    <div id="title" class="py-3">
+      <h1 class="text-center">Kappa Theta Pi Strikes</h1>
+      <h5 class="text-center">A log of all strikes added and removed and their reasons why.</h5>  
+    </div>
+    <!-- Bootstrap spacing classnames such as 'mt-2' and 'py-2' allow for responsive
+         and consistent margins and padding -->
+    <div id="loading-message" class="text-center mt-2">
+      <h5 class="py-2">Loading Table...</h5>
+      <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>  
+    </div>
+    <table id="table" class="table table-striped no-show">
+      <thead class="text-center">
         <tr>
           <th data-field="id">Strike ID</th>
           <th data-field="user_id" data-sortable="true">User ID</th>
@@ -33,10 +49,18 @@
     <script>
       var $table = $('#table');
 
-      $.getJSON("http://slack-striker.herokuapp.com/getAllStrikes", function (data) {
+      // animation durations, in ms
+      var fadeTime = 400;
+
+      $.getJSON("http://slack-striker.herokuapp.com/getAllStrikes", function(data) {
+        $('#loading-message').fadeOut(fadeTime);
         var strikes = data.allStrikes;
 
+        // fill table with JSON data from AJAX response
         $table.bootstrapTable({data: strikes});
+
+        // waits until spinner is completely gone and then comes in
+        $table.delay(fadeTime).fadeIn(fadeTime);
       });
     </script>
   </body>
